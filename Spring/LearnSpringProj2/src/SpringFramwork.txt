@@ -1,0 +1,1025 @@
+Spring Frame Work
+==================================================================================================================
+==================================================================================================================
+
+1.	Spring framework is replacement for EJBs.
+2. 	Spring framework is lightweight and loosely coupled.
+3.	EJB has dependency on application server.
+4. 	Spring jars are enough along with JDK we can run application. Not having dependency on platform.
+
+EJBs are heavy weighted because it has dependency of Application server.
+
+If we have to implement Servlets, we have to implement from either Servlet Interface or extend from Abstract Class, Generic Servlet or extend from Abstract Class, HttpServlet.
+
+For implement EJBs, we have to implement from EJB APIs. But in case of Spring, we need not to implement from any Interface or extend any Class.
+
+Spring recommends Association relationship ("Has-A") instead of Inheritance relation.
+
+Spring based on below rules:
+	1.)	Runtime polymorphism.
+	2.)	Association relation.
+	
+Spring has three containers:
+	Spring MVC has Web container.
+	Spring IOC (Context Dependency Injection or Inversion of control) has Core and J2EE containers.
+	
+
+Spring containers
+
+	Spring MVC ----> Web Container (known as WebApplicationContext (Interface))
+
+	Spring IOC ----> Core Container (known as BeanFactory (Interface))
+	             |
+				 +-> J2EE Container (known as ApplicationContext (Interface))
+				 
+
+Servlet container capabilities:
+	=>	Read XML file.
+	=>	Create instances of beans (Servlet).
+	=>	It will manage life cycles of Bean classes.
+	=>  Will pass dynamic parameters are passed to bean classes.
+
+	
+IOC containers capabilities:
+	=>	Read XML file.
+	=>	Create instances of simple POJO classes.
+	=>	It will manage life cycles of POJO classes.
+	=>  Will pass dynamic parameters are passed to POJO classes.
+
+Main asset of Spring is Dependency Injection.
+
+To start containers, we have implementation classes for below containers:
+	Spring MVC ----> Web Container (WebApplicationContext (I)) --> WebApplicationContextUtils (Factory Class) 		                                                  {Will create WebApplicationContext object)
+	                                                                            
+	Spring IOC ----> Core Container (BeanFactory (I))  --> XmlBeanFactory (C)
+	             |
+				 +-> J2EE Container (ApplicationContext (I))
+				                        |
+										| (Child Interface)
+										|
+										V
+									ConfigurableApplicationContext (I)
+										|
+										|
+										|
+										V
+									ClasspathXmlApplicationContext(C)
+ 
+ 
+Main required components for Spring application are:
+	1.)	POJO class.
+	2.)	XML file.
+	3.)	Driver class.
+	
+
+Why Spring? 
+To simplify Java Enterprise Development. (J2EE)
+
+Goals of Spring framework:
+	Lightweight develpoment with JAVA POJOs (Plain Old Java Object).
+	Dependency Injection to promote loose coupling.
+	Declarative programming with Aspect Oriented Programming (AOP).
+	Minimize boilerplate JAVA code.
+	
+Core Container:
+     __________________
+	|   _____________  |
+	|  |             | |
+    |  |   Beans     | |	
+	|  |_____________| |
+	|                  |
+	|   _____________  |
+	|  |             | |
+    |  |   Core      | |	
+	|  |_____________| |
+	|   _____________  |
+	|  |             | |
+    |  |   SpEL      | |	
+	|  |_____________| |
+	|   _____________  |
+	|  |             | |
+    |  |   Context   | |	
+	|  |_____________| |
+    |__________________|	
+
+Capabilities of CORE Container:
+	It has a BeanFactory to create beans.
+	It has capability to read config file for setting properties and dependecies.
+	
+	
+	
+Infrastructure:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   AOP             | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Aspects         | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Instrumentation | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Messaging       | |	
+	|  |___________________| |
+    |________________________|	
+
+Aspect Oriented Programming:
+	In a nutshell will create application wired services like 
+		Logging.
+		Security.
+		Transactions.
+		Instrumentation => Using JMX (Java Management Extension), Java agents to remotely monitor our app.
+
+
+	
+Data Access Layer:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   JDBC            | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   ORM             |-+---> Integration with Hibernates/ JPA	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Transactions    | |	
+	|  |___________________| |
+	|   ______       ______  |
+	|  |      |     |      | |
+    |  | OXM  |     |  JMS | |	
+	|  |______|     |______| |
+    |________________________|	
+
+This is to interact with Database. It could be either a SQL or No-SQL DB.
+
+JMS => to send messages to Message Queue in ASync fashion.
+Transactions => Making heavy use of AOP behind the scenes.
+
+	
+Web Layer:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   Servlet         | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   WebSockets      | |
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Web             | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Portlet         | |	
+	|  |___________________| |
+    |________________________|	
+
+
+Testing:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   Unit            | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Integration     | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Mock            | |	
+	|  |___________________| |
+    |________________________|	
+
+
+Q.)	What is Inversion Of Control?
+A.)	Approach of outsourcing the Construction and Management of objects.
+	Outsourced to BeanFactory.
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Spring Container 
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Primary functions:
+	Create or Manage objects (Inversion Of Control).
+	Inject Object's dependencies (Dependency Injection).
+
+How to Configure Spring Container?
+	XML Configuration file (legacy method).
+	Java Annotations
+	Java Source code.
+	
+
+Spring Development Process:
+======================================
+1.	Configure your Spring Beans.
+2.	Create a Spring Container.
+3.	Retrieve Beans from Spring Container.
+
+
+
+Spring Container is also known as ApplicationContext. We have specialized implementations like below:
+==>	ClassPathXmlApplicationContext.
+==>	AnnotationConfigApplicationContext.
+==>	GenericWebApplicationContext.
+... others.
+
+Types of Dependency Injections:
+Constructor Injection.
+Setter Injection.
+	|
+	+----> "ref" attribute in spring application config file to set dependency injection or other objects
+	|
+	+----> "value" attribute is to set Literal values.
+	
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Scope
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+Scope refers to the lifecycle of the bean.
+How long does the bean live?
+How many instances are created?
+How is the bean shared?
+
+
+Scope refers to the lifecycle of the bean.
+===========================================================
+
+Default scope of a bean is Singleton.
+Spring Container creates only one instance of the bean, dy default.
+It is cached in memory.
+All requests for the bean will retuen a Shared reference to the SAME bean.
+
+
+Additional Spring Bean Scopes:
+------------------------------------------------------------------------------
+Scope         | Description
+--------------+----------------------------------------------------------------
+singleton     | Create a single shared instance of the bean. Default scope.
+--------------+----------------------------------------------------------------
+prototype     | Creates a new bean instance for each container request.
+--------------+----------------------------------------------------------------
+request       | Scoped to an HTTP web request. Only used for web apps.
+--------------+----------------------------------------------------------------
+session       | Scoped to an HTTP web session. Only used for web apps.
+--------------+----------------------------------------------------------------
+global-session| Scoped to a global HTTP web session. Only used for web apps.
+--------------+----------------------------------------------------------------
+
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Life Cycle methods
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+When Spring container has started, there are couple of things will happen. Below is the life cycle:
+
+Container started ===> 
+	|
+    V
+Bean Instantiated ===> 
+    |
+    V
+Dependencies Injected ===> 
+    |
+    V
+Internal Spring processing with Beanfactory
+    |
+	V
+Provision to implement custom Init method.
+	|
+	V
+Bean is ready for use. Call methods on bean and use it.
+    |
+    V
+When bean is shutdown, we have a provision to implement custom destroy method.
+	|
+	V
+Application stopped.
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Life Cycle methods
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+We can add custom code during Bean initialization:
+	=>	Calling custom business logic methods.
+	=>	Setting up handles to resources (DB, sockets, files etc)
+
+We can add custom code during Bean Destruction:
+	=>	Calling custom business logic methods.
+	=>	Cleanup handles to resources (DB, sockets, files etc)
+
+
+
+Configuring Init and Destroy method in config file:
+===================================================
+
+<bean id="myCoach1" class="com.learnspring.beanscopes.BaseballCoach1" scope="prototype" init-method="doMyInitStuff" destroy-method="doMyDestroyStuff">
+		<constructor-arg ref="myFortuneService">
+		</constructor-arg>
+	</bean>
+
+
+Special Note about init and destroy Method Signatures:
+======================================================
+
+When using XML configuration, I want to provide additional details regarding the method signatures of the init-method  and destroy-method.
+
+Access modifier
+The method can have any access modifier (public, protected, private)
+
+Return type
+The method can have any return type. However, "void' is most commonly used. If you give a return type just note that you will not be able to capture the return value. As a result, "void" is commonly used.
+
+Method name
+The method can have any method name.
+
+Arguments
+The method can not accept any arguments. The method should be no-arg.
+
+
+
+Special Note about Destroy Lifecycle and Prototype Scope :
+======================================================
+There is a subtle point you need to be aware of with "prototype" scoped beans.
+
+For "prototype" scoped beans, Spring does not call the destroy method.  Gasp!  
+
+
+
+---
+
+In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean: the container instantiates, configures, and otherwise assembles a prototype object, and hands it to the client, with no further record of that prototype instance.
+
+Thus, although initialization lifecycle callback methods are called on all objects regardless of scope, in the case of prototypes, configured destruction lifecycle callbacks are not called. The client code must clean up prototype-scoped objects and release expensive resources that the prototype bean(s) are holding. 
+
+
+
+---
+
+This also applies to both XML configuration and Annotation-based configuration.
+
+
+
+---
+
+QUESTION: How can I create code to call the destroy method on prototype scope beans
+
+
+
+ANSWER:
+
+You can destroy prototype beans but custom coding is required.
+
+
+
+
+Development Process
+
+1. Create a custom bean processor. This bean processor will keep track of prototype scoped beans. During shutdown it will call the destroy() method on the prototype scoped beans. The custom processor is configured in the spring config file.
+
+
+
+	<!-- Bean custom processor to handle calling destroy methods on prototype scoped beans -->
+        <bean id="customProcessor"
+    		class="com.luv2code.springdemo.MyCustomBeanProcessor">
+   	</bean>
+
+
+
+
+2. The prototype scoped beans MUST implement the DisposableBean interface. This interface defines a "destory()" method.
+
+
+
+public class TrackCoach implements Coach, DisposableBean {
+ 
+	...
+	
+	// add a destroy method
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("TrackCoach: inside method doMyCleanupStuffYoYo");		
+	}
+ 
+}
+
+
+
+
+3. The spring configuration must be updated to use the destroy-method of "destroy".
+
+
+
+ 	<bean id="myCoach"
+ 		class="com.luv2code.springdemo.TrackCoach"
+ 		init-method="doMyStartupStuff"
+ 		destroy-method="destroy"
+ 		scope="prototype">	
+ 		
+ 		<!-- set up constructor injection -->
+ 		<constructor-arg ref="myFortuneService" />
+ 	</bean>
+
+
+
+
+4. In this app, BeanLifeCycleDemoApp.java is the main program.  TrackCoach.java is the prototype scoped bean. TrackCoach implements the DisposableBean interface and provides the destroy() method. The custom bean processing is handled in the MyCustomBeanProcessor class.
+
+
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+JAVA Annotations
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+
+They are Special labels/ markers added to JAVA classes.
+Provide meta data about the class
+Can be processed at compile-time or run-time for special purposes.
+
+
+Why Spring Configuration with Annotation?
+	==>	XML configuration can be verbose in case of actual project.
+	==>	Configure your Spring beans with Annotations.
+	==> Annotations minimize the XML Configurations.
+	
+	
+Scanning for Component Classes:
+	When special annotation is available for a Java Class, Spring will scan that class and register that bean in Spring Container.
+	
+
+	
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Configuring beans using Annotations
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+@Component("bean_1")
+Class MyBeanClass {
+	...
+}
+
+bean ID = bean_1
+
+Or 
+
+@Component
+Class MyBeanClass {
+	...
+}
+
+bean ID = myBeanClass
+
+
+	
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+What is Spring Auto wiring?
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+For dependency injection, Spring can use Auto wiring.
+Spring will look for a class that matches the property
+	=> matches by type : class or interface.
+Spring will inject it automatically.
+
+Autowiring Injection Types:
+	Constructor Injection.
+	Setter Injection.
+	Field Injection.
+
+	
+
+	
+AUTOWIRING
+===================================================================================================
+FAQ: What if there are multiple FortuneService implementations?
+
+When using autowiring, what if there are multiple FortuneService implementations? Like in the image below?
+
+
+FortuneService (I)
+|
+|__________________________________________________
+|                            |                     |
+|                            |                     |
+FortuneServiceImpl1(C)     FortuneServiceImpl2(C)  FortuneServiceImpl3(C)
+
+ANSWER
+
+Spring has special support to handle this case. Use the @Qualifier annotation. We'll cover this later in the course with slides and code examples. But don't worry, we will address all scenarios :-)
+
+
+
+Note:
+
+
+Question
+
+I have finished the video "Constructor Injection - Writing Code part2".
+
+I have commented the Autowired annotation. But still it worked. How did it work?
+
+    //@Autowired
+    public TennisCoach(FortuneService theFortuneService) {
+        System.out.println(" theFortuneService " + theFortuneService);
+        fortuneService = theFortuneService;
+    }
+===
+
+Answer
+
+This is a new feature of Spring 4.3.
+
+Here is the snippet from the Spring Docs.
+
+Section 1.9.2: Autowired
+
+As of Spring Framework 4.3, an @Autowired annotation on such a constructor is no longer necessary if the target bean only defines one constructor to begin with. However, if several constructors are available, at least one must be annotated to teach the container which one to use.
+
+I personally prefer to use the @Autowired annotation because it makes the code more readable. But as mentioned, the @Autowired is not required for this scenario.
+
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Field Injection
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Inject dependencies by setting field values on your class directly (Even Private fields)
+
+Accomplished by using Java reflections.
+
+Process:
+	Configure the dependency injection with Autowired annotation on the field directly and no need to use setter/ getter methods.
+	
+	
+
+
+
+What if multiple implementations are there for dependency interface? Which Implementation should be wired to bean?
+
+Aug 27, 2020 5:29:17 PM org.springframework.context.support.AbstractApplicationContext refresh
+WARNING: Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'cricketCoach' defined in file [C:\Users\saakh\eclipse-workspace\LearnSpring2\bin\com\learnspring2\dependencyinjection\annotationautowiringandqualifiers\CricketCoach.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'com.learnspring2.dependencyinjection.annotationautowiringandqualifiers.FortuneService' available: expected single matching bean but found 3: bestFortuneService,happyFortuneService,restFortuneService
+Exception in thread "main" org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'cricketCoach' defined in file [C:\Users\saakh\eclipse-workspace\LearnSpring2\bin\com\learnspring2\dependencyinjection\annotationautowiringandqualifiers\CricketCoach.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'com.learnspring2.dependencyinjection.annotationautowiringandqualifiers.FortuneService' available: expected single matching bean but found 3: bestFortuneService,happyFortuneService,restFortuneService
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:797)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:227)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1356)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1203)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:556)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:516)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:226)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:322)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:897)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:551)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:144)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:85)
+	at com.learnspring2.dependencyinjection.annotationautowiringandqualifiers.MyApp.main(MyApp.java:9)
+Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'com.learnspring2.dependencyinjection.annotationautowiringandqualifiers.FortuneService' available: expected single matching bean but found 3: bestFortuneService,happyFortuneService,restFortuneService
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveNotUnique(DependencyDescriptor.java:220)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1285)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1227)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:884)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:788)
+	... 15 more
+
+	
+Solution:
+===============
+We should use @Qualifier annotation.
+
+
+
+
+
+
+
+Annotations - Default Bean Names - The Special Case
+====================================================================================================================================
+Annotations - Default Bean Names ... and the Special Case
+====================================================================================================================================
+
+
+In general, when using Annotations, for the default bean name, Spring uses the following rule.
+
+If the annotation's value doesn't indicate a bean name, an appropriate name will be built based on the short name of the class (with the first letter lower-cased).
+
+For example:
+
+HappyFortuneService --> happyFortuneService
+
+---
+
+However, for the special case of when BOTH the first and second characters of the class name are upper case, then the name is NOT converted.
+
+For the case of RESTFortuneService
+
+RESTFortuneService --> RESTFortuneService
+
+No conversion since the first two characters are upper case.
+
+Behind the scenes, Spring uses the Java Beans Introspector to generate the default bean name. Here's a screenshot of the documentation for the key method.
+
+
+Also, here's a link to the documentation.
+
+- https://docs.oracle.com/javase/8/docs/api/java/beans/Introspector.html#decapitalize(java.lang.String)
+
+---
+
+As always, you can give explicity names to your beans.
+
+@Component("foo")
+public class RESTFortuneService .... {
+    
+}
+
+Then you can access it using the name of "foo". Nothing tricky to worry about :-)
+
+
+Using @Qualifier with Constructors
+======================================================================================================================================
+@Qualifier is a nice feature, but it is tricky when used with Constructors.
+
+The syntax is much different from other examples and not exactly intuitive.  Consider this the "deep end of the pool" when it comes to Spring configuration LOL :-)
+
+ You have to place the @Qualifier annotation inside of the constructor arguments. 
+
+Here's an example from our classroom example. I updated it to make use of constructor injection, with @Autowired and @Qualifier. Make note of the code in bold below:
+
+---
+package com.luv2code.springdemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TennisCoach implements Coach {
+
+    private FortuneService fortuneService;
+
+    // define a default constructor
+    public TennisCoach() {
+        System.out.println(">> TennisCoach: inside default constructor");
+    }
+    
+    @Autowired
+    public TennisCoach(@Qualifier("randomFortuneService") FortuneService theFortuneService) {
+
+        System.out.println(">> TennisCoach: inside constructor using @autowired and @qualifier");
+        
+        fortuneService = theFortuneService;
+    }
+       
+    
+    /*
+    @Autowired
+    public void doSomeCrazyStuff(FortuneService theFortuneService) {
+        System.out.println(">> TennisCoach: inside doSomeCrazyStuff() method");
+        fortuneService = theFortuneService;
+    }
+    */
+    
+    /*
+    @Autowired
+    public TennisCoach(FortuneService theFortuneService) {
+        fortuneService = theFortuneService;
+    }
+    */
+    
+    @Override
+    public String getDailyWorkout() {
+        return "Practice your backhand volley";
+    }
+
+    @Override
+    public String getDailyFortune() {
+        return fortuneService.getFortune();
+    }
+
+}
+
+
+
+
+
+FAQ: How to inject properties file using Java annotations
+==============================================================================
+
+
+
+Answer:
+
+This solution will show you how inject values from a properties file using annotatons. The values will no longer be hard coded in the Java code.
+
+1. Create a properties file to hold your properties. It will be a name value pair.  
+
+New text file:  src/sport.properties
+
+foo.email=myeasycoach@luv2code.com
+foo.team=Silly Java Coders
+Note the location of the properties file is very important. It must be stored in src/sport.properties
+
+2. Load the properties file in the XML config file.
+
+File: applicationContext.xml
+
+Add the following lines:
+
+    <context:property-placeholder location="classpath:sport.properties"/>  
+
+This should appear just after the <context:component-scan .../> line
+
+3. Inject the properties values into your Swim Coach: SwimCoach.java
+
+   
+
+@Value("${foo.email}")
+private String email;
+    
+@Value("${foo.team}")
+private String team;
+---
+
+
+==========================================================================================================================================================================================================
+==========================================================================================================================================================================================================
+Bean Scope
+==========================================================================================================================================================================================================
+==========================================================================================================================================================================================================
+
+BeanScope referes to the life cycle of the Bean.
+
+How long does the Bean live?
+How many instances are created?
+How is the bean Shared?
+
+Default BeanScope for all Beans in Spring is Singleton.
+
+
+
+Special Note about @PostConstruct and @PreDestroy Method Signatures
+==========================================================================================================================================================================================================
+==========================================================================================================================================================================================================
+I want to provide additional details regarding the method signatures of @PostContruct and @PreDestroy methods.
+
+Access modifier
+==========================================================================================================================================================================================================
+==========================================================================================================================================================================================================
+The method can have any access modifier (public, protected, private)
+
+Return type
+The method can have any return type. However, "void' is most commonly used. If you give a return type just note that you will not be able to capture the return value. As a result, "void" is commonly used.
+
+Method name
+The method can have any method name.
+
+Arguments
+The method can not accept any arguments. The method should be no-arg.
+
+
+
+3 Ways to configure Spring Container:
+============================================================
+
+1.	Full XML config.
+2.	XML Component scan.
+3.	Java Configuation class.
+
+
+
+=======================================================================================================================
+=======================================================================================================================
+=======================================================================================================================
+=======================================================================================================================
+FAQ: How @Bean works behind the scenes
+=======================================================================================================================
+=======================================================================================================================
+=======================================================================================================================
+=======================================================================================================================
+Question:
+
+During All Java Configuration, how does the @Bean annotation work in the background?
+
+
+
+Answer
+
+This is an advanced concept. 
+For this code:
+
+  @Bean 
+  public Coach swimCoach() {   
+   SwimCoach mySwimCoach = new SwimCoach();   
+   return mySwimCoach; 
+  }
+At a high-level, Spring creates a bean component manually. By default the scope is singleton. So any request for a "swimCoach" bean, will get the same instance of the bean since singleton is the default scope.
+
+
+
+However, let's break it down line-by-line
+
+@Bean
+
+
+The @Bean annotation tells Spring that we are creating a bean component manually. We didn't specify a scope so the default scope is singleton.
+
+ public Coach swimCoach(){
+This specifies that the bean will bean id of "swimCoach". The method name determines the bean id. The return type is the Coach interface. 
+This is useful for dependency injection. This can help Spring find any dependencies that implement the Coach interface.
+
+The @Bean annotation will intercept any requests for "swimCoach" bean. Since we didn't specify a scope, the bean scope is singleton. As a result, it will give the same instance of the bean for any requests.
+
+
+
+ SwimCoach mySwimCoach = new SwimCoach();
+This code will create a new instance of the SwimCoach.
+
+
+
+ return mySwimCoach;
+This code returns an instance of the swimCoach.
+
+----
+
+
+
+Now let's step back and look at the method in it's entirety.
+
+ @Bean 
+ public Coach swimCoach() {   
+   SwimCoach mySwimCoach = new SwimCoach();   
+   return mySwimCoach; 
+ }
+
+
+It is important to note that this method has the @Bean annotation. The annotation will intercept ALL calls to the method "swimCoach()". Since no scope is specified the @Bean annotation uses singleton scope. Behind the scenes, during the @Bean interception, it will check in memory of the Spring container (applicationContext) and see if this given bean has already been created.
+
+If this is the first time the bean has been created then it will execute the method as normal. It will also register the bean in the application context. So that is knows that the bean has already been created before. Effectively setting a flag.
+
+The next time this method is called, the @Bean annotation will check in memory of the Spring container (applicationContext) and see if this given bean has already been created. Since the bean has already been created (previous paragraph) then it will immediately return the instance from memory. It will not execute the code inside of the method. Hence this is a singleton bean.
+
+The code for
+
+ SwimCoach mySwimCoach = new SwimCoach(); 
+ return mySwimCoach;
+is not executed for subsequent requests to the method public Coach swimCoach() . This code is only executed once during the initial bean creation since it is singleton scope.
+
+
+
+That explains how @Bean annotation works for the swimCoach example.
+
+====
+
+Now let's take it one step further.
+
+Here's your other question
+
+>> Please explain in detail whats happening behind the scene for this statement.
+
+return new SwimCoach(sadFortuneService())
+
+
+The code for this question is slightly different. It is injecting a dependency.
+
+In this example, we are creating a SwimCoach and injecting the sadFortuneService().
+
+         // define bean for our sad fortune service
+        @Bean
+        public FortuneService sadFortuneService() {
+            return new SadFortuneService();
+        }
+        
+        // define bean for our swim coach AND inject dependency
+        @Bean
+        public Coach swimCoach() {
+            SwimCoach mySwimCoach = new SwimCoach(sadFortuneService());
+            
+            return mySwimCoach;
+        }
+
+
+Using the same information presented earlier
+
+The code
+
+        // define bean for our sad fortune service
+        @Bean
+        public FortuneService sadFortuneService() {
+            return new SadFortuneService();
+        }
+
+
+In the code above, we define a bean for the sad fortune service. Since the bean scope is not specified, it defaults to singleton.
+
+Any calls for sadFortuneService, the @Bean annotation intercepts the call and checks to see if an instance has been created. First time through, no instance is created so the code executes as desired. For subsequent calls, the singleton has been created so @Bean will immediately return with the singleton instance.
+
+
+
+Now to the main code based on your question.
+
+return new SwimCoach(sadFortuneService())
+This code creates an instance of SwimCoach. Note the call to the method sadFortuneService(). We are calling the annotated method above. The @Bean will intercept and return a singleton instance of sadFortuneService. The sadFortuneService is then injected into the swim coach instance.
+
+
+
+This is effectively dependency injection. It is accomplished using all Java configuration (no xml).
+
+---
+
+This concludes the line-by-line discussion of the source code. All of the behind the scenes work.
+
+
+
+
+
+FAQ: Problems with Injecting Values - Value not returning from ${foo.email}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Question
+
+I am running the code for Java Configuration and injecting values from props file. However, I'm getting:
+
+${foo.email}
+${foo.team}
+
+Instead of the actual property values. How can I resolve this?
+
+Answer
+
+This is an issue with Spring versions.
+
+If you are using Spring 4.2 and lower, you will need to add the code in bold.
+
+---
+
+package com.luv2code.springdemo;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+@Configuration
+// @ComponentScan("com.luv2code.springdemo")
+@PropertySource("classpath:sport.properties")
+public class SportConfig {
+    
+    // add support to resolve ${...} properties
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer
+                    propertySourcesPlaceHolderConfigurer() {
+        
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+    
+    // define bean for our sad fortune service
+    @Bean
+    public FortuneService sadFortuneService() {
+        return new SadFortuneService();
+    }
+    
+    // define bean for our swim coach AND inject dependency
+    @Bean
+    public Coach swimCoach() {
+        SwimCoach mySwimCoach = new SwimCoach(sadFortuneService());
+        
+        return mySwimCoach;
+    }
+    
+}
+----
+
+In Spring 4.3 and higher, they removed this requirement. As a result, you don't need this code.
+
+

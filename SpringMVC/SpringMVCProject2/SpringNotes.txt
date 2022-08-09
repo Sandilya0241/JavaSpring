@@ -1,0 +1,420 @@
+@Transactional :
+	Is a spring annotation which helps in automatically begin and end (commit) transaction.
+	
+	
+@Component
+|
++----- @Controller
+|
++----- @Repository
+
+@Component is to indicate where are spring components available.
+@Controller is to handle MVC related activities.
+@Repository is for DAO specific classes. Will also translate JDBC checked exceptions to unchecked exceptions.
+
+
+
+
+	
+@GetMapping	== Requests data from given resources.
+@PostMapping == Submits data to given resources.
+
+
+
+By default when nothing is mentioned in form, then it's GET method. Below three forms of get method notations are valid
+
+
+@RequestMapping("/list")
+@RequestMapping(path="/list",method=RequestMethod.GET)
+@GetMapping("/list")
+
+
+
+Service Layer between Controller and DAO is to make controller fetch data from multiple DAO classes. This is one implementation of "Service Facade Pattern". 
+Ex:
+	If "Customer Detail" controller has to get data from various data sources like Customer DB (CustomerDAO), Sales DB (SalesDAO) and Licenses DB (LicensesDAO), then it could be easily achievable using 
+	Service Facade Pattern.
+	
+
+@Component
+|
++----- @Controller
+|
++----- @Repository
+|
++----- @Service
+
+
+While using Service layer in between DAO and Controller, we set @Transactional annotation to Service layer instead of DAO layer.
+
+
+
+Aspect Oriented Programming (AOP):
+Let us say, if we have 2 requirements like below:
+1.)	Need to add logging to DAO classes and add some logging statements before the start of the method.
+2.) Need to add security code to DAO and ensure user is authorized before running DAO method.
+
+We can create classes for above requirements and call the methods on required places. What if it should be included in all projects and all modules.
+
+By implementing it the way mentioned just above, we have two issues:
+1.)	Code Tangling.
+2.) Code Scattering.
+
+Note: We cannot go with Inheriting the Logging and Security class and provide security and logging to DAO classes. This is because, we have to change all classes adding "extends" class name. 
+Also, if any DAO class is already extending a class, then it's not possible (JAVA doesn't support multiple inheritance).
+
+Delegating the logging & security code is also not an ideal way of implementing. Because, we have to implement this change at all DAO class level.
+
+
+
+
+
+
+
+
+So AOP is:
+
+Programming technique based on concept of an aspect.
+Aspect encapsulates cross-cutting logic. ==> Cross-cutting concerns.
+
+    |			|				     |			|				     |			|				      __________
+    |Logging	|	 | Account 	|    |Logging	|	 | Account 	|    |Logging	|	 | Account 	|    |       	|
+<==>|and		|<==>|Controller|<==>|and		|<==>| Service  |<==>|and		|<==>|   DAO    |<==>|	  DB	|
+	|Security	|	 |			|    |Security	|	 |			|	 |Security	|	 |			|    |__________|
+	|Aspect		|                    |Aspect	|                	 |Aspect	|                    
+	|			|                    |			|                	 |			|                                 
+
+Aspects can be reused at multiple locations.
+Same aspect/class ... applied based on configurations.
+	
+
+
+                                 _________________________AOP____________________________ 
+                                |                                                        |
+    |			|				|     			 				      			 		 |		     |          |
+    |Main    	|	            |    |AOP	    |	 | Logging 	|    |Security	|	     |           | Target   |
+<==>|Application|<==============|===>|Proxy   	|<==>| Aspect   |<==>|Aspect	|<=======|==========>| object	|
+	|        	|	            |    |      	|	 |			|	 | 	        |	     |           |          |
+	                            |    |      	|                	 |	        |        |           
+	                            |     			                 	  			         |                        
+                                |________________________________________________________| 
+	
+	
+MainApp
+targetObj.doSomeStuff();                                                                             public void doSomeStuff() {
+                                                                                                     ...
+                                                                                                     }
+                                                                                                     
+                                                                                                     
+Benefits of AOP:
+
+Code for Aspect is defined in a single class:
+================================================
+	Much better than being scattered everywhere and Promotes code reuse and easier to change.
+
+Business code in your application is cleaner:
+================================================
+	Only applies to business functionality : addAccount.
+	Reduces code complexity.
+
+Configurable:
+================================================
+	Based on configuration, apply aspects selectively to different parts of application.
+	No need to make changes to main application code.
+
+Additional AOP benfits:
+================================================
+================================================
+
+Most Common:
+================================================
+logging, security, transactions.
+
+Audit logging:
+================================================
+who, when, where and what.
+
+Exception Handling:
+================================================
+log exception and notify DevOps team via SMS/ EMAIL.
+
+API MANAGEMENT:
+================================================
+How many times has a method been called by User?
+Analytics: What are peak times? What is average load? who is top user?
+
+
+AOP
+===============================================================================================
+Advantages                                   | Disadvantage
+=============================================+=================================================
+1.)	Reusable modules.                        | 1.) Too many aspects and application flow 
+2.) Resolve code tangling.                   |	too hard to follow.
+3.) Resolve code scatter.                    | 
+4.) Applied selective based on configuration.| 2.) Minor performance cost for aspect execution.    
+                                             |	(run-time weaving).
+                                             
+
+AOP Terminology:
+	
+	Aspect:	
+		Module of code for a cross-cutting concern.
+	
+	Advice:
+		What action is taken and when it should be applied.
+		
+	Join Point:
+		When to apply code during program execution.
+	
+	Pointcut:
+		A predicate expression for where advise should be applied.
+
+
+
+Advice Types:
+	Before Advice: 
+		run before the method.
+	After finally advice: 
+		run after the method (finally).
+	After returning advice: 
+		run after the method (success execution).
+	After throwing advice:
+		run after method (if exception is thrown).
+	Around advice:
+		run before and after method.
+	
+Weaving:
+	Connecting aspects to target objects to create an advised object.
+Different types of Weaving:
+	Compile-time, Run-time and Load-Time.
+Run-time weaving is slowest with respect to Performance.
+
+
+=======================================================================================================================
+=======================================================================================================================
+AspectJ:
+=======================================================================================================================
+=======================================================================================================================
+Original AOP framework, released in 2001.
+Provides complete AOP support.
+Rich support for 
+	-	join points: method  level, constructor level and field level
+	-	code weaving: compile-time, post compile-time and load-time.
+
+	
+
+	
+=======================================================================================================================
+=======================================================================================================================
+Advantages and Disadvantages of SPRING AOP:
+=======================================================================================================================
+=======================================================================================================================
+Advantages:
+	-	Simpler to use than AspectJ.
+	-	Uses Proxy pattern.
+	-	Can migrate to AspectJ when using @Aspect annotation.
+
+Disadvantages:
+	-	Only supports method-level join points.
+	-	Can only apply aspects to beans created by Spring app context.
+	-	Minor performance cost for aspect execution (as its runtime weaving)
+	
+=======================================================================================================================
+=======================================================================================================================
+Advantages and Disadvantages of ASPECTJ AOP:
+=======================================================================================================================
+=======================================================================================================================
+Advantages:
+	-	Supports all join points.
+	-	Works with any POJO, not just beans from app context.
+	-	Faster performance compared to Spring AOP.
+	-	Complete AOP support.
+Disadvantages:
+	-	Compile-time weaving requires extra compilation step.
+	-	AspectJ pointcut syntax can become complex.
+	
+
+=======================================================================================================================
+=======================================================================================================================
+SPRING AOP vs ASPECTJ AOP:
+=======================================================================================================================
+=======================================================================================================================
+
+SPRING AOP only supports:
+	Method-level join points.
+	Run-time code weaving (slower than AspectJ).
+
+ASPECTJ AOP supports:
+	Join Points:	method level, constructor and field level.
+	weaving:		compile-time, load-time and post-compile time.
+	
+	
+Spring AOP is a light implementation of AOP.
+Unless until there is specific requirement, don't go with ASPECTJ.
+
+
+
+=======================================================================================================================
+=======================================================================================================================
+Pointcut Expression language:
+=======================================================================================================================
+=======================================================================================================================
+execution (modifier-pattern? return-type-pattern declaring-type-pattern? method-name-pattern (param-pattern) throws-pattern?)
+
+? ==> option pattern
+Wild cards:
+	*	=> matches everything.
+	
+	
+EX:
+	Match on method names:
+	
+	
+To match only addAccount() method in AccountsDAO class see below:
+
+	@Before("execution (public void com.learnspring.aop.aspect.AccountsDAO.addAccount())")
+						  |      |  --------------------------------------     |                    
+						  V      |                      |                      | 
+						modifier |                      |                      V
+						         V                      V                  Method type.
+						      Return type       Declaring type
+	
+
+To match any addAccount() method in Any class see below:
+
+	@Before("execution (public void addAccount())")
+						  |      |          |                    
+						  V      |          | 
+						modifier |          |
+						         V          |
+						      Return type   |
+	                                        V
+	                                     Method type
+
+	                                     
+To match method names (using wild cards). Match methods starting with add in any class see below:
+
+	@Before("execution (public void       add*())")
+						  |      |          |                    
+						  V      |          | 
+						modifier |          |
+						         V          |
+						      Return type   |
+	                                        V
+	                                     Method type
+
+
+To match method names (using wild cards). Match methods starting with ProcessCreditCard in any class see below:
+
+	@Before("execution (public VerificationResult	ProcessCreditCard*())")
+						  |      |          		       |                    
+						  V      |                         | 
+						modifier |                         |
+						         V                         |
+						      Return type                  |
+	                                                       V
+	                                     				Method type
+
+
+
+To match method names by using wildcards on modifier and return type see below:
+
+	@Before("execution (  *	     *  ProcessCreditCard*())")
+						  |      |          |                    
+						  V      |          | 
+						modifier |          |
+						         V          |
+						      Return type   |
+	                                        V
+	                                     Method type
+
+
+To match method names by using wildcards on modifier and return type see below:
+The below pointcut applied to "a method name starting with "ProcessCredirCard" having any return type and access modifier"
+
+	@Before("execution (  *	     *  ProcessCreditCard*())")
+						  |      |          |                    
+						  V      |          | 
+						modifier |          |
+						         V          |
+						      Return type   |
+	                                        V
+	                                     Method type
+
+
+In the above example modifier is optional. So, leaving modifer to default public, how the pointcut expression looks like see below:
+
+	@Before("execution (  *  ProcessCreditCard*())")
+						  |          |                    
+						  |          | 
+						  |          |
+						  V          |
+					Return type   	 |
+	                                 V
+	                             Method type
+
+	                             
+
+	                             
+	                             
+Parameter pattern wildcards:
+=====================================================
+
+For Param-pattern
+
+	() => matches a method with no arguments.
+	(*) => matches a method with one argument of any type.
+	(..) => matches a method with 0 or more arguments of any type.
+
+
+Pointcut expression examples:
+-----------------------------------------------------
+Match on method parameters:
+Match addAccount methods with no arguments.
+	
+	@Before("execution (* addAccount())")
+	                    |        |   |
+	                    V        |   V
+	                 Return type |  Param no-args
+	                             V
+	                        	Method name
+	                    
+
+
+Match on method parameters:
+Match addAccount methods that have Account param.
+
+	@Before("execution (* addAccount(com.learnspring.aop.Account))")
+	                    |        |   			|
+	                    V        |   			V
+	                 Return type |  		Param type
+	                             V
+	                        	Method name
+
+	                        	
+
+Match on method parameters:
+Match addAccount methods with any number of arguments.
+
+	@Before("execution (* addAccount(..))")
+	                    |        |    |
+	                    V        |    V
+	                 Return type |  Param type
+	                             V
+	                        	Method name
+
+
+Match on method parameters:
+Match any method in our DAO package: com.learnspring.aop.dao
+
+	@Before("execution (* com.learnspring.aop.dao.*.*(..))")
+	                    |        |    			  |	   |
+	                    V        |    			  |    V
+	                 Return type |                |  Param type
+	                             V                |
+	                        	Package name      V
+	                        	               classname.method
+	                        	               
+
+
+

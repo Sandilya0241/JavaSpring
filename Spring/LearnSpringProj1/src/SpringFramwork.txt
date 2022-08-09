@@ -1,0 +1,472 @@
+Spring Frame Work
+==================================================================================================================
+==================================================================================================================
+
+1.	Spring framework is replacement for EJBs.
+2. 	Spring framework is lightweight and loosely coupled.
+3.	EJB has dependency on application server.
+4. 	Spring jars are enough along with JDK we can run application. Not having dependency on platform.
+
+EJBs are heavy weighted because it has dependency of Application server.
+
+If we have to implement Servlets, we have to implement from either Servlet Interface or extend from Abstract Class, Generic Servlet or extend from Abstract Class, HttpServlet.
+
+For implement EJBs, we have to implement from EJB APIs. But in case of Spring, we need not to implement from any Interface or extend any Class.
+
+Spring recommends Association relationship ("Has-A") instead of Inheritance relation.
+
+Spring based on below rules:
+	1.)	Runtime polymorphism.
+	2.)	Association relation.
+	
+Spring has three containers:
+	Spring MVC has Web container.
+	Spring IOC (Context Dependency Injection or Inversion of control) has Core and J2EE containers.
+	
+
+Spring containers
+
+	Spring MVC ----> Web Container (known as WebApplicationContext (Interface))
+
+	Spring IOC ----> Core Container (known as BeanFactory (Interface))
+	             |
+				 +-> J2EE Container (known as ApplicationContext (Interface))
+				 
+
+Servlet container capabilities:
+	=>	Read XML file.
+	=>	Create instances of beans (Servlet).
+	=>	It will manage life cycles of Bean classes.
+	=>  Will pass dynamic parameters are passed to bean classes.
+
+	
+IOC containers capabilities:
+	=>	Read XML file.
+	=>	Create instances of simple POJO classes.
+	=>	It will manage life cycles of POJO classes.
+	=>  Will pass dynamic parameters are passed to POJO classes.
+
+Main asset of Spring is Dependency Injection.
+
+To start containers, we have implementation classes for below containers:
+	Spring MVC ----> Web Container (WebApplicationContext (I)) --> WebApplicationContextUtils (Factory Class) 		                                                  {Will create WebApplicationContext object)
+	                                                                            
+	Spring IOC ----> Core Container (BeanFactory (I))  --> XmlBeanFactory (C)
+	             |
+				 +-> J2EE Container (ApplicationContext (I))
+				                        |
+										| (Child Interface)
+										|
+										V
+									ConfigurableApplicationContext (I)
+										|
+										|
+										|
+										V
+									ClasspathXmlApplicationContext(C)
+ 
+ 
+Main required components for Spring application are:
+	1.)	POJO class.
+	2.)	XML file.
+	3.)	Driver class.
+	
+
+Why Spring? 
+To simplify Java Enterprise Development. (J2EE)
+
+Goals of Spring framework:
+	Lightweight develpoment with JAVA POJOs (Plain Old Java Object).
+	Dependency Injection to promote loose coupling.
+	Declarative programming with Aspect Oriented Programming (AOP).
+	Minimize boilerplate JAVA code.
+	
+Core Container:
+     __________________
+	|   _____________  |
+	|  |             | |
+    |  |   Beans     | |	
+	|  |_____________| |
+	|                  |
+	|   _____________  |
+	|  |             | |
+    |  |   Core      | |	
+	|  |_____________| |
+	|   _____________  |
+	|  |             | |
+    |  |   SpEL      | |	
+	|  |_____________| |
+	|   _____________  |
+	|  |             | |
+    |  |   Context   | |	
+	|  |_____________| |
+    |__________________|	
+
+Capabilities of CORE Container:
+	It has a BeanFactory to create beans.
+	It has capability to read config file for setting properties and dependecies.
+	
+	
+	
+Infrastructure:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   AOP             | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Aspects         | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Instrumentation | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Messaging       | |	
+	|  |___________________| |
+    |________________________|	
+
+Aspect Oriented Programming:
+	In a nutshell will create application wired services like 
+		Logging.
+		Security.
+		Transactions.
+		Instrumentation => Using JMX (Java Management Extension), Java agents to remotely monitor our app.
+
+
+	
+Data Access Layer:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   JDBC            | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   ORM             |-+---> Integration with Hibernates/ JPA	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Transactions    | |	
+	|  |___________________| |
+	|   ______       ______  |
+	|  |      |     |      | |
+    |  | OXM  |     |  JMS | |	
+	|  |______|     |______| |
+    |________________________|	
+
+This is to interact with Database. It could be either a SQL or No-SQL DB.
+
+JMS => to send messages to Message Queue in ASync fashion.
+Transactions => Making heavy use of AOP behind the scenes.
+
+	
+Web Layer:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   Servlet         | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   WebSockets      | |
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Web             | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Portlet         | |	
+	|  |___________________| |
+    |________________________|	
+
+
+Testing:
+     ________________________
+	|   ___________________  |
+	|  |                   | |
+    |  |   Unit            | |	
+	|  |___________________| |
+	|                        |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Integration     | |	
+	|  |___________________| |
+	|   ___________________  |
+	|  |                   | |
+    |  |   Mock            | |	
+	|  |___________________| |
+    |________________________|	
+
+
+Q.)	What is Inversion Of Control?
+A.)	Approach of outsourcing the Construction and Management of objects.
+	Outsourced to BeanFactory.
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Spring Container 
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Primary functions:
+	Create or Manage objects (Inversion Of Control).
+	Inject Object's dependencies (Dependency Injection).
+
+How to Configure Spring Container?
+	XML Configuration file (legacy method).
+	Java Annotations
+	Java Source code.
+	
+
+Spring Development Process:
+======================================
+1.	Configure your Spring Beans.
+2.	Create a Spring Container.
+3.	Retrieve Beans from Spring Container.
+
+
+
+Spring Container is also known as ApplicationContext. We have specialized implementations like below:
+==>	ClassPathXmlApplicationContext.
+==>	AnnotationConfigApplicationContext.
+==>	GenericWebApplicationContext.
+... others.
+
+Types of Dependency Injections:
+Constructor Injection.
+Setter Injection.
+	|
+	+----> "ref" attribute in spring application config file to set dependency injection or other objects
+	|
+	+----> "value" attribute is to set Literal values.
+	
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Scope
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+Scope refers to the lifecycle of the bean.
+How long does the bean live?
+How many instances are created?
+How is the bean shared?
+
+
+Scope refers to the lifecycle of the bean.
+===========================================================
+
+Default scope of a bean is Singleton.
+Spring Container creates only one instance of the bean, dy default.
+It is cached in memory.
+All requests for the bean will retuen a Shared reference to the SAME bean.
+
+
+Additional Spring Bean Scopes:
+------------------------------------------------------------------------------
+Scope         | Description
+--------------+----------------------------------------------------------------
+singleton     | Create a single shared instance of the bean. Default scope.
+--------------+----------------------------------------------------------------
+prototype     | Creates a new bean instance for each container request.
+--------------+----------------------------------------------------------------
+request       | Scoped to an HTTP web request. Only used for web apps.
+--------------+----------------------------------------------------------------
+session       | Scoped to an HTTP web session. Only used for web apps.
+--------------+----------------------------------------------------------------
+global-session| Scoped to a global HTTP web session. Only used for web apps.
+--------------+----------------------------------------------------------------
+
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Life Cycle methods
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+When Spring container has started, there are couple of things will happen. Below is the life cycle:
+
+Container started ===> 
+	|
+    V
+Bean Instantiated ===> 
+    |
+    V
+Dependencies Injected ===> 
+    |
+    V
+Internal Spring processing with Beanfactory
+    |
+	V
+Provision to implement custom Init method.
+	|
+	V
+Bean is ready for use. Call methods on bean and use it.
+    |
+    V
+When bean is shutdown, we have a provision to implement custom destroy method.
+	|
+	V
+Application stopped.
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+Bean Life Cycle methods
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+We can add custom code during Bean initialization:
+	=>	Calling custom business logic methods.
+	=>	Setting up handles to resources (DB, sockets, files etc)
+
+We can add custom code during Bean Destruction:
+	=>	Calling custom business logic methods.
+	=>	Cleanup handles to resources (DB, sockets, files etc)
+
+
+
+Configuring Init and Destroy method in config file:
+===================================================
+
+<bean id="myCoach1" class="com.learnspring.beanscopes.BaseballCoach1" scope="prototype" init-method="doMyInitStuff" destroy-method="doMyDestroyStuff">
+		<constructor-arg ref="myFortuneService">
+		</constructor-arg>
+	</bean>
+
+
+Special Note about init and destroy Method Signatures:
+======================================================
+
+When using XML configuration, I want to provide additional details regarding the method signatures of the init-method  and destroy-method.
+
+Access modifier
+The method can have any access modifier (public, protected, private)
+
+Return type
+The method can have any return type. However, "void' is most commonly used. If you give a return type just note that you will not be able to capture the return value. As a result, "void" is commonly used.
+
+Method name
+The method can have any method name.
+
+Arguments
+The method can not accept any arguments. The method should be no-arg.
+
+
+
+Special Note about Destroy Lifecycle and Prototype Scope :
+======================================================
+There is a subtle point you need to be aware of with "prototype" scoped beans.
+
+For "prototype" scoped beans, Spring does not call the destroy method.  Gasp!  
+
+
+
+---
+
+In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean: the container instantiates, configures, and otherwise assembles a prototype object, and hands it to the client, with no further record of that prototype instance.
+
+Thus, although initialization lifecycle callback methods are called on all objects regardless of scope, in the case of prototypes, configured destruction lifecycle callbacks are not called. The client code must clean up prototype-scoped objects and release expensive resources that the prototype bean(s) are holding. 
+
+
+
+---
+
+This also applies to both XML configuration and Annotation-based configuration.
+
+
+
+---
+
+QUESTION: How can I create code to call the destroy method on prototype scope beans
+
+
+
+ANSWER:
+
+You can destroy prototype beans but custom coding is required.
+
+
+
+
+Development Process
+
+1. Create a custom bean processor. This bean processor will keep track of prototype scoped beans. During shutdown it will call the destroy() method on the prototype scoped beans. The custom processor is configured in the spring config file.
+
+
+
+	<!-- Bean custom processor to handle calling destroy methods on prototype scoped beans -->
+        <bean id="customProcessor"
+    		class="com.luv2code.springdemo.MyCustomBeanProcessor">
+   	</bean>
+
+
+
+
+2. The prototype scoped beans MUST implement the DisposableBean interface. This interface defines a "destory()" method.
+
+
+
+public class TrackCoach implements Coach, DisposableBean {
+ 
+	...
+	
+	// add a destroy method
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("TrackCoach: inside method doMyCleanupStuffYoYo");		
+	}
+ 
+}
+
+
+
+
+3. The spring configuration must be updated to use the destroy-method of "destroy".
+
+
+
+ 	<bean id="myCoach"
+ 		class="com.luv2code.springdemo.TrackCoach"
+ 		init-method="doMyStartupStuff"
+ 		destroy-method="destroy"
+ 		scope="prototype">	
+ 		
+ 		<!-- set up constructor injection -->
+ 		<constructor-arg ref="myFortuneService" />
+ 	</bean>
+
+
+
+
+4. In this app, BeanLifeCycleDemoApp.java is the main program.  TrackCoach.java is the prototype scoped bean. TrackCoach implements the DisposableBean interface and provides the destroy() method. The custom bean processing is handled in the MyCustomBeanProcessor class.
+
+
+
+
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+JAVA Annotations
+====================================================================================================================================================================================================
+====================================================================================================================================================================================================
+
+
+They are Special labels/ markers added to JAVA classes.
+Provide meta data about the class
+Can be processed at compile-time or run-time for special purposes.
+
+
+Why Spring Configuration with Annotation?
+	==>	XML configuration can be verbose in case of actual project.
+	==>	Configure your Spring beans with Annotations.
+	==> Annotations minimize the XML Configurations.
+	
+	
+Scanning for Component Classes:
+	When special annotation is available for a Java Class, Spring will scan that class and register that bean in Spring Container.
+	

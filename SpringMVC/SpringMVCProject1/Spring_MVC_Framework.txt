@@ -1,0 +1,196 @@
+====================================================================================================================================================================================================================================
+====================================================================================================================================================================================================================================
+Spring MVC Framework
+====================================================================================================================================================================================================================================
+====================================================================================================================================================================================================================================
+
+What is Spring MVC?
+
+	==>	Framework for building web applications in JAVA.
+	==>	Based on Model-View-Controller design pattern.
+	==>	Leverages features of the Core Spring Framework (IOC, DI).
+	
+
+	
+	
+	
+Web Browser ----------------->	Front Controller 
+	A									|
+	|									|
+	|									V
+	|								Controller 
+	|									|
+	|									|
+	|									V
+	+----------------------------	View Template
+									
+									
+Spring MVC Benefits:
+====================================================================================================================================================================================================================================
+
+The Spring way of building web app UIs in Java.
+Leverage a set of reusable UI components.
+Help manage application state for web requests.
+Process form data: validation, conversion etc.
+Flexible configuration for the view layer.
+
+
+Components of a Spring MVC application:
+====================================================================================================================================================================================================================================
+
+	==>	A set of web pages to layout UI components. (Web pages).
+	==>	A collection of Spring beans (controllers, services etc).
+	==>	Spring configuration (XML, Annotations or Java code).
+	
+
+
+Spring MVC Front Controller:
+====================================================================================================================================================================================================================================
+	==>	Front Controller is also known as DispatcherServlet.
+		+	Part of the Spring MVC framework.
+		+	Already developed by Spring Dev Team.
+	==>	What we would be creating?
+		+ 	Model objects.
+		+	View templates.
+		+	Controller classes.
+		
+
+
+====================================================================================================================================================================================================================================
+Controller:
+====================================================================================================================================================================================================================================
+
+Code created by developer.
+
+Contains business logic:
+	Handles requests.
+	Store/ Retrieve data (DB, web service)
+	Place data in model.
+	
+Send to appropriate view template.
+
+====================================================================================================================================================================================================================================
+Model:
+====================================================================================================================================================================================================================================
+
+This contains data.
+
+Store/ retrieve data via backend systems.
+
+
+FAQ: Use properties file to load country options
+Question: 
+
+How to use properties file to load country options
+
+Answer:
+
+This solution will show you how to place the country options in a properties file. The values will no longer be hard coded in the Java code.
+
+1. Create a properties file to hold the countries. It will be a name value pair.  Country code is name. Country name is the value.
+
+New text file:  WEB-INF/countries.properties
+
+BR=Brazil 
+FR=France 
+CO=Colombia 
+IN=India
+Note the location of the properties file is very important. It must be stored in WEB-INF/countries.properties
+
+2. Update header section for Spring config file
+
+We are going to use a new set of Spring tags for <util>. As a result, you need to update the header information in the Spring config file.
+
+File: spring-mvc-dmo-servlet.xml
+
+Remove the previous header and add this.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+        xmlns:context="http://www.springframework.org/schema/context" 
+        xmlns:mvc="http://www.springframework.org/schema/mvc" 
+        xmlns:util="http://www.springframework.org/schema/util" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans     
+            http://www.springframework.org/schema/beans/spring-beans.xsd     
+            http://www.springframework.org/schema/context     
+            http://www.springframework.org/schema/context/spring-context.xsd     
+            http://www.springframework.org/schema/mvc         
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+            http://www.springframework.org/schema/util     
+            http://www.springframework.org/schema/util/spring-util.xsd">
+3. Load the country options properties file in the Spring config file. Bean id: countryOptions
+
+File: spring-mvc-dmo-servlet.xml
+
+Add the following lines:
+
+<util:properties  id="countryOptions" location="classpath:../countries.properties" /> 
+
+4.1 In StudentController.java, add the following import statement:
+
+import java.util.Map;
+4.2 Inject the properties values into your Spring Controller: StudentController.java
+
+@Value("#{countryOptions}") 
+private Map<String, String> countryOptions;
+5. Add the country options to the Spring MVC model. Attribute name: theCountryOptions
+
+@RequestMapping("/showForm") 
+public String showForm(Model theModel) { 
+ 
+    // create a student object Student 
+    Student theStudent = new Student();
+ 
+    // add student object to the model 
+    theModel.addAttribute("student", theStudent); 
+ 
+    // add the country options to the model 
+    theModel.addAttribute("theCountryOptions", countryOptions); 
+ 
+    return "student-form"; 
+}
+6. Update the JSP page, student-form.jsp, to use the new model attribute for the drop-down list: theCountryOptions
+
+<form:select path="country"> 
+ <form:options items="${theCountryOptions}" />
+</form:select>
+7. Remove all references to country option from your Student.java.  
+
+
+
+
+Special Note about BindingResult Parameter Order
+================================================================
+When performing Spring MVC validation, the location of the BindingResult parameter is very important. In the method signature, the BindingResult parameter must appear immediately after the model attribute. 
+
+If you place it in any other location, Spring MVC validation will not work as desired. In fact, your validation rules will be ignored.
+
+        @RequestMapping("/processForm")
+        public String processForm(
+                @Valid @ModelAttribute("customer") Customer theCustomer,
+                BindingResult theBindingResult) {
+            ...            
+        }
+Here is the relevant section from the Spring Reference Manual
+
+---
+
+Defining @RequestMapping methods
+
+@RequestMapping handler methods have a flexible signature and can choose from a range of supported controller method arguments and return values.
+...
+
+The Errors or BindingResult parameters have to follow the model object that is being
+bound immediately ...
+
+
+
+@InitBinder
+===================================================
+
+@InitBinder annotation works as a pre-processor. It will pre-process each web request to our controller. Method annotated with @InitBinder is executed.
+
+
+

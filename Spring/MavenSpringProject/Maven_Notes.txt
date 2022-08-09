@@ -1,0 +1,162 @@
+Maven project
+==========================================
+Project structure
+====================
+
+Project_name
+ |
+ |--- pom.xml
+ |--- src
+ |     |--- main
+ |     |     |--- java
+ |     |     |--- resources
+ |     |     |--- webapp
+ |     |--- test
+ |     |     |--- java
+ |     |     |--- resources
+ |--- target
+
+src/main/java => Source java code.
+src/main/resources => Properties/ config files used by application.
+src/main/webapp => JSP files and web config files. Other web assets like images, css, js.
+src/test => Unit testing code and properties.
+target => Destination directory for compiled code. Automatically created by Maven.
+
+Standard Directory Structure:
+==================================
+Sample project structure.
+
+Project_name
+ |
+ |--- pom.xml
+ |--- src
+ |     |--- main
+ |     |     |--- java
+ |     |     |      |--- com
+ |     |     |      |     |--- luv2code
+ |     |     |      |     |     |--- springdemo
+ |     |     |      |     |     |      |--- controller
+ |     |     |      |     |     |      |      |--- CustomerController.java
+ |     |     |      |     |     |      |--- dao
+ |     |     |      |     |     |      |--- entity
+ |     |     |      |     |     |      |--- service 
+ |     |     |      |     |     |      |
+ |     |     |      |     
+ |     |     |--- resources
+ |     |     |--- webapp
+ |     |     |     |--- index.jsp
+ |     |     |     |--- WEB-INF
+ |     |     |     |     |--- spring-mvc-crud-demo-servlet.xml
+ |     |     |     |     |--- web.xml
+ |     |     |     |     |--- view
+ |     |     |     |     |     |--- list-customers.jsp
+ |     |--- test
+ |     |     |--- java
+ |     |     |--- resources
+ |--- target
+
+
+
+POM file
+===================================
+     
+1.) POM (Project Object Model) file.
+2.) Configuration file for your project.
+
+POM file structure
+====================
+
+project meta data
+	This section have details about "Project Name", "Project Version", "Output file type" like JAR, WAR etc	  
+dependencies
+	This section have details about list of projects we depend on like Spring, Hibernate etc.
+plug-ins
+	This section have details about additional custom tasks to run like genrate JUnit test reports etc.
+
+
+Sample POM File:
+=====================
+
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.luv2code</groupId>
+	<artifactId>mycoolapp</artifactId>
+	<version>1.0.FINAL</version>
+	<packaging>jar</packaging>
+	<name>mycoolapp</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>jar</scope>
+		</dependency>
+	<dependencies>
+	<!-- add plugins for customizations -->
+</project>
+
+
+Project Coordinates
+Group ID : Name of the company. group or organization. Convention is to use reverse domain name like org.wikipedia
+Artifact ID : Name for this project: mycoolapp
+Version : A specific release version like: 1.0, 1.6, 2.0 .. If a project is under active development then: 1.0-SNAPSHOT
+
+Example for Spring/ Hibernates:
+
+Spring:
+------------
+<groupId>org.spring-framework</groupId>
+<artifactId>spring-context</artifactId>
+<version>5.0.0.RELEASE</version>
+
+Hibernate:
+------------
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-core</artifactId>
+<version>5.2.11.Final</version>
+
+Dependency Coordinates:
+====================================
+
+To add given dependency project, we need
+	Group ID, Artifact ID
+	Version is Optional (Best practice is to include the version for repeatable builds like DevOps)
+
+This is also referred as GAV
+
+Find Dependency Coordinates:
+=====================================
+Option 1: Visit project page (like Spring or Hibernate)
+Option 2: Visit http://search.maven.org
+
+
+Maven Archetypes:
+==================================
+
+1.) Archetypes can be used to create new Maven projects.
+2.) Contains template files for a given Maven project.
+3.) Think of it as a collection of "starter files" for a project. Java Project, Web Project.
+
+Common Archetypes:
+maven-archetype-quickstart ==> An archetype to generate a sample Maven project (Standalone).
+maven-archetype-webapp ==> An archetype to generate a sample Maven Webapp project (WebApp).
+
+Archetypes:
+maven-archetypes-quickstart contains
+
+project
+|--- pom.xml
+|--- src/main/java/App.java
+|--- src/test/java/AppTest.java
+
+maven-archetypes-webapp contains
+
+project
+|--- pom.xml
+|--- src/main/webapp/index.jsp
+|--- src/main/webapp/WEB-INF/web.xml
+
+
+Local Repository => Local on developers machine. C:/Users/<User-HOme-Dir>/.m2/repository
+Central Repository => ~/.m2/repository

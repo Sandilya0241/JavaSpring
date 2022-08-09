@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<bean id="myFortuneTeller" class="com.learnspring.destroy_prototype_scope_bean_with_custom_processor.FortuneTellerImpl2">
+	</bean>
+
+	<bean id="myCoach" class="com.learnspring.destroy_prototype_scope_bean_with_custom_processor.BaseballCoach2" init-method="doMyStartupStuff" destroy-method="destroy" scope="prototype">
+		<constructor-arg ref="myFortuneTeller">
+		</constructor-arg>
+	</bean>
+	
+	<bean id="myCoach2" class="com.learnspring.destroy_prototype_scope_bean_with_custom_processor.CricketCoach2" init-method="doMyStartupStuff2" destroy-method="myDestroyStuff">
+		<constructor-arg ref="myFortuneTeller">
+		</constructor-arg>
+	</bean>
+	
+	<!-- Bean custom processor to handle calling destroy methods on prototype scoped beans -->
+	<bean id="customProcessor" class="com.learnspring.destroy_prototype_scope_bean_with_custom_processor.MyCustomBeanProcessor">
+	</bean>
+</beans>
